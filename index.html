@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Startup Validator AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#0f172a;
+color:white;
+padding:30px;
+}
+
+.container{
+max-width:1400px;
+margin:auto;
+}
+
+h1{
+font-size:3rem;
+font-weight:800;
+text-align:center;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+opacity:.8;
+margin-bottom:40px;
+}
+
+.input-card{
+background:#1e293b;
+padding:25px;
+border-radius:20px;
+margin-bottom:30px;
+}
+
+textarea{
+width:100%;
+height:180px;
+background:#0f172a;
+color:white;
+border:none;
+padding:20px;
+border-radius:15px;
+font-size:16px;
+resize:none;
+}
+
+button{
+width:100%;
+margin-top:20px;
+padding:16px;
+border:none;
+border-radius:15px;
+font-size:18px;
+font-weight:700;
+cursor:pointer;
+background:linear-gradient(135deg,#3b82f6,#8b5cf6);
+color:white;
+}
+
+button:hover{
+transform:translateY(-2px);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+margin-top:30px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:20px;
+}
+
+.card-title{
+font-size:14px;
+opacity:.7;
+margin-bottom:10px;
+}
+
+.score{
+font-size:40px;
+font-weight:800;
+}
+
+.section{
+margin-top:30px;
+}
+
+.section h2{
+margin-bottom:15px;
+}
+
+.list{
+background:#1e293b;
+padding:20px;
+border-radius:20px;
+}
+
+.list ul{
+padding-left:20px;
+}
+
+.list li{
+margin-bottom:10px;
+}
+
+.big-card{
+background:#1e293b;
+padding:25px;
+border-radius:20px;
+margin-top:20px;
+}
+
+.loading{
+text-align:center;
+font-size:22px;
+margin-top:20px;
+display:none;
+}
+
+#report{
+display:none;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>🚀 Startup Validator AI</h1>
+
+<p class="subtitle">
+AI Powered Startup Evaluation Platform
+</p>
+
+<div class="input-card">
+
+<textarea
+id="idea"
+placeholder="Describe your startup idea..."
+></textarea>
+
+<button onclick="analyzeStartup()">
+Analyze Startup
+</button>
+
+</div>
+
+<div class="loading" id="loading">
+Analyzing Startup Idea...
+</div>
+
+<div id="report">
+
+<div class="big-card">
+
+<h2 id="startupName">Startup Name</h2>
+
+<p id="summary"></p>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+<div class="card-title">Innovation</div>
+<div class="score" id="innovation">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Market Demand</div>
+<div class="score" id="market">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Revenue Potential</div>
+<div class="score" id="revenue">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Funding Potential</div>
+<div class="score" id="funding">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Scalability</div>
+<div class="score" id="scalability">0</div>
+</div>
+
+<div class="card">
+<div class="card-title">Overall Score</div>
+<div class="score" id="overall">0</div>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Strengths</h2>
+
+<div class="list">
+<ul id="strengths"></ul>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Weaknesses</h2>
+
+<div class="list">
+<ul id="weaknesses"></ul>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Opportunities</h2>
+
+<div class="list">
+<ul id="opportunities"></ul>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>Threats</h2>
+
+<div class="list">
+<ul id="threats"></ul>
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="big-card">
+
+<h2>Target Customers</h2>
+<p id="customers"></p>
+
+<hr style="margin:20px 0">
+
+<h2>Market Size</h2>
+<p id="marketSize"></p>
+
+<hr style="margin:20px 0">
+
+<h2>Revenue Model</h2>
+<p id="revenueModel"></p>
+
+<hr style="margin:20px 0">
+
+<h2>Business Model</h2>
+<p id="businessModel"></p>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="big-card">
+
+<h2>Competitors</h2>
+
+<ul id="competitors"></ul>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="big-card">
+
+<h2>Development Cost</h2>
+<p id="devCost"></p>
+
+<hr style="margin:20px 0">
+
+<h2>Investment Required</h2>
+<p id="investment"></p>
+
+<hr style="margin:20px 0">
+
+<h2>Valuation Estimate</h2>
+<p id="valuation"></p>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="big-card">
+
+<h2>Growth Potential</h2>
+<p id="growth"></p>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="big-card">
+
+<h2>Investor Verdict</h2>
+<p id="verdict"></p>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="big-card">
+
+<h2>Final Recommendation</h2>
+<p id="recommendation"></p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function createList(id,data){
+
+const ul=document.getElementById(id);
+
+ul.innerHTML="";
+
+data.forEach(item=>{
+
+const li=document.createElement("li");
+
+li.textContent=item;
+
+ul.appendChild(li);
+
+});
+
+}
+
+async function analyzeStartup(){
+
+const idea=document.getElementById("idea").value;
+
+if(!idea){
+
+alert("Enter startup idea");
+
+return;
+
+}
+
+document.getElementById("loading").style.display="block";
+document.getElementById("report").style.display="none";
+
+try{
+
+const response=await fetch(
+"http://127.0.0.1:8000/validate",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+idea:idea
+})
+}
+);
+
+const result=await response.json();
+
+const data=result.data;
+
+document.getElementById("startupName").innerText=data.startup_name;
+document.getElementById("summary").innerText=data.executive_summary;
+
+document.getElementById("innovation").innerText=data.scores.innovation;
+document.getElementById("market").innerText=data.scores.market_demand;
+document.getElementById("revenue").innerText=data.scores.revenue_potential;
+document.getElementById("funding").innerText=data.scores.funding_potential;
+document.getElementById("scalability").innerText=data.scores.scalability;
+document.getElementById("overall").innerText=data.scores.overall;
+
+createList("strengths",data.strengths);
+createList("weaknesses",data.weaknesses);
+createList("opportunities",data.opportunities);
+createList("threats",data.threats);
+
+document.getElementById("customers").innerText=data.target_customers;
+document.getElementById("marketSize").innerText=data.market_size;
+document.getElementById("revenueModel").innerText=data.revenue_model;
+document.getElementById("businessModel").innerText=data.business_model;
+
+createList("competitors",data.competitors);
+
+document.getElementById("devCost").innerText=data.development_cost;
+document.getElementById("investment").innerText=data.investment_required;
+document.getElementById("valuation").innerText=data.valuation_estimate;
+
+document.getElementById("growth").innerText=data.growth_potential;
+document.getElementById("verdict").innerText=data.investor_verdict;
+document.getElementById("recommendation").innerText=data.recommendation;
+
+document.getElementById("loading").style.display="none";
+document.getElementById("report").style.display="block";
+
+}
+catch(error){
+
+console.log(error);
+
+document.getElementById("loading").style.display="none";
+
+alert("Backend Error");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
